@@ -164,8 +164,30 @@
   @media (min-width:700px){
     .key{height:48px}
   }
+
+  html.locked .app{display:none}
+  .gate{display:none;position:fixed;inset:0;z-index:9999;background:var(--bg);align-items:center;justify-content:center;padding:20px}
+  html.locked .gate{display:flex}
+  .gate-box{width:100%;max-width:320px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 18px;box-shadow:0 20px 50px rgba(18,33,43,.18)}
+  .gate-title{font-size:20px;font-weight:750;color:var(--ink);margin-bottom:4px}
+  .gate-sub{font-size:12px;color:var(--muted);margin-bottom:14px}
+  .gate input{width:100%;box-sizing:border-box;border:2px solid var(--navy);border-radius:10px;padding:11px 12px;font-size:24px;letter-spacing:.15em;font-family:var(--mono);outline:none;background:#fff;color:var(--ink)}
+  .gate button{width:100%;margin-top:10px;border:0;border-radius:10px;padding:11px;background:var(--navy);color:#fff;font-size:15px;font-weight:650;font-family:var(--sans);cursor:pointer}
+  .gate-err{min-height:16px;margin-top:8px;font-size:12px;color:#c0392b;text-align:center}
 </style>
+<script>
+try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.documentElement.classList.add('locked'); } catch(e) { document.documentElement.classList.add('locked'); }
+</script>
 </head>
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <div class="gate-title">芯片型号快查</div>
+    <div class="gate-sub">请输入口令</div>
+    <input id="gatePass" type="password" inputmode="numeric" autocomplete="off" placeholder="口令">
+    <button id="gateBtn">进入</button>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
 <body>
 <div class="app">
   <header>
@@ -1289,6 +1311,20 @@
 
   // expose for testing in console
   window.__chipApp = {state, ALL, search, buildCSV, selectModel, setTab, rebuild};
+})();
+</script>
+<script>
+(function(){
+  var PASS_HASH='bc67505e';
+  var input=document.getElementById('gatePass');
+  var err=document.getElementById('gateErr');
+  var btn=document.getElementById('gateBtn');
+  function fnv(s){var h=2166136261>>>0;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h.toString(16);}
+  function unlock(){try{localStorage.setItem('chipQuickScan.unlocked','1');}catch(e){} document.documentElement.classList.remove('locked');}
+  function attempt(){var v=input.value.trim(); if(fnv(v)===PASS_HASH){unlock();}else{err.textContent='口令不对';input.select();}}
+  btn.addEventListener('click',attempt);
+  input.addEventListener('keydown',function(e){if(e.key==='Enter')attempt();});
+  if(document.documentElement.classList.contains('locked')){setTimeout(function(){input.focus();},80);}
 })();
 </script>
 </body>
