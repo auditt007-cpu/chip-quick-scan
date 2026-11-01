@@ -216,6 +216,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
       </div>
       <div class="filters" id="brandChips"></div>
       <div class="filters" id="familyChips"></div>
+      <div class="filters" id="catChips"></div>
       <div class="hint-row"><div class="hint" id="hint"></div><span class="count-pill" id="scanCount">0 块</span><button id="unknownBtn" class="mini">未知</button><button id="undoBtn" class="mini">撤销</button></div>
       <div class="candidates" id="candidates"></div>
       <div class="keypad" id="keypad">
@@ -244,7 +245,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
       <details class="add-box" open>
         <summary>口径说明：板型 / 496 / D3 D4 / Bxxx / JZ</summary>
         <div class="note" style="margin:8px 0 0;font-size:12px;line-height:1.7">
-          <p><b>板型：</b>顶配 = 运存+存储集成在一颗 eMCP/uMCP 里，CPU 独立，表面 2 颗芯片；200球（三颗料）= CPU/运存/存储三颗独立，200-ball 存储；盖板 = 运存 PoP 叠在 CPU 上，存储独立，496-ball 运存满分。</p>
+          <p><b>板型：</b>顶配 = 运存+存储集成在一颗 eMCP/uMCP 里，CPU 独立，表面 2 颗芯片；三颗料（200球）= CPU/运存/存储三颗独立，200-ball 存储；盖子板 = 运存 PoP 叠在 CPU 上，存储独立，496-ball 运存满分。</p>
           <p><b>496：</b>是 LPDDR5/5X 运存颗粒的一档 FBGA 球数（三星、海力士、长鑫都有 496Ball 产品）；496 桶是按这个运存档收整板，不是 uMCP 合封。</p>
           <p><b>D3 / D4：</b>D3 = LPDDR3，D4 = LPDDR4X。D3 的 B809/B614 是 LPDDR3；D4 的 B425/B422/H9HP52AC 是 LPDDR4X。D3 里的 H9HQ52ACP 是 uMCP（LPDDR4X），单独按 uMCP 处理。</p>
           <p><b>Bxxx：</b>B614 / B809 / B425 / B422 是三星料号 hyphen 后的版本/封装后缀，同一后缀对应多个完整型号：B809 = KMRC1000BM-B809（3+64）/ KMRC10014M-B809（4+64）；B425 = KMDH/KMDP（4+64）/ KMDX（3+32）；B515 = KM3H6001CA / KM3H6001CM（6+64）；B625 = KMDC（4+64）/ KMDV（4+128）。</p>
@@ -729,11 +730,11 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
 
   function catOf(m){
     const b = Number(m.balls) || 0;
-    if (b === 200) return "200球";
-    if (b === 496) return "盖板";
+    if (b === 200) return "三颗料";
+    if (b === 496) return "盖子板";
     if (m.family === "eMCP" || m.family === "uMCP") return "顶配";
-    if (m.family === "eMMC" || m.family === "UFS" || m.family === "LPDDR5") return "盖板";
-    if (b === 153) return "盖板";
+    if (m.family === "eMMC" || m.family === "UFS" || m.family === "LPDDR5") return "盖子板";
+    if (b === 153) return "盖子板";
     if (b === 221 || b === 254 || b === 297 || b === 144) return "顶配";
     const s = (m.model + " " + (m.aliases || []).join(" ")).toUpperCase();
     if (s.includes("EMCP") || s.includes("UMCP")) return "顶配";
@@ -773,6 +774,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   let activeTab = "scan";
   let filterBrand = "全部";
   let filterFamily = "全部";
+  let filterCat = "全部";
   let modelSearch = "";
 
   function loadState(){
@@ -918,12 +920,13 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     return s;
   }
 
-  function search(query, brand, family, limit){
+  function search(query, brand, family, cat, limit){
     const q = (query || "").trim();
     const out = [];
     for (const m of ALL) {
       if (brand !== "全部" && m.brand !== brand) continue;
       if (family !== "全部" && m.family !== family) continue;
+      if (cat !== "全部" && m.cat !== cat) continue;
       const sc = score(m, q);
       if (sc < 0) continue;
       out.push({m, sc});
@@ -961,16 +964,21 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     $("#familyChips").innerHTML = families.map(f =>
       `<button class="chip ${filterFamily===f?"on":""}" data-family="${esc(f)}">${esc(f)}<span class="cnt">${countF(f)}</span></button>`
     ).join("");
+    const cats = ["全部","顶配","盖子板","三颗料"];
+    const countC = (c) => ALL.filter(m => c === "全部" || m.cat === c).length;
+    $("#catChips").innerHTML = cats.map(c =>
+      `<button class="chip ${filterCat===c?"on":""}" data-cat="${esc(c)}">${esc(c)}<span class="cnt">${countC(c)}</span></button>`
+    ).join("");
   }
 
   function renderCandidates(){
     const q = $("#query").value;
-    const results = search(q, filterBrand, filterFamily, 8);
+    const results = search(q, filterBrand, filterFamily, filterCat, 8);
     const hint = $("#hint");
-    if (!q.trim()) {
+    if (results.length === 0) {
+      hint.innerHTML = q.trim() ? "没匹配到。少输一位、换品牌筛选，或点下面“未知 / 待补”。" : "当前分类没有型号；点“全部”或换分类。";
+    } else if (!q.trim()) {
       hint.innerHTML = "常用型号先列出来；输入数字后实时缩小。例：<b>614</b> / <b>1000 809</b> / <b>813</b>";
-    } else if (results.length === 0) {
-      hint.innerHTML = "没匹配到。少输一位、换品牌筛选，或点下面“未知 / 待补”。";
     } else if (q.replace(/\D/g,"").length <= 2) {
       hint.innerHTML = `匹配 <b>${results.length}</b> 个；再输一位，或加前缀字母更快（如 H9HQ53）。`;
     } else {
@@ -1087,7 +1095,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   function renderModels(){
     $("#modelCount").textContent = `型号库 ${ALL.length} 条`;
     const q = modelSearch.trim();
-    const results = q ? search(q, "全部", "全部", 60) : ALL.slice().sort((a,b) => b.rank - a.rank || a.model.localeCompare(b.model)).slice(0, 60).map(m => ({m, sc: 0}));
+    const results = q ? search(q, "全部", "全部", "全部", 60) : ALL.slice().sort((a,b) => b.rank - a.rank || a.model.localeCompare(b.model)).slice(0, 60).map(m => ({m, sc: 0}));
     if (!results.length) {
       $("#modelList").innerHTML = `<div class="empty">没有匹配的型号。</div>`;
       return;
@@ -1229,6 +1237,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     if (t.classList && t.classList.contains("chip")) {
       if (t.dataset.brand != null) filterBrand = t.dataset.brand;
       if (t.dataset.family != null) filterFamily = t.dataset.family;
+      if (t.dataset.cat != null) filterCat = t.dataset.cat;
       renderFilters(); renderCandidates();
     }
     const cand = t.closest && t.closest(".cand");
