@@ -245,7 +245,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
       <details class="add-box" open>
         <summary>口径说明：板型 / 496 / D3 D4 / Bxxx / JZ</summary>
         <div class="note" style="margin:8px 0 0;font-size:12px;line-height:1.7">
-          <p><b>板型：</b>顶配 = 运存+存储集成在一颗 eMCP/uMCP 里，CPU 独立，表面 2 颗芯片；三颗料 = CPU、运存、存储三颗独立（200/178-ball 独立运存），表里的 4DR/4CR/32-16/64-32 通用码属于这档；盖子板 = 运存 PoP 叠在 CPU 上，存储独立，496-ball 运存满分。</p>
+          <p><b>板型：</b>顶配 = 运存+存储集成在一颗 eMCP/uMCP 里，CPU 独立，表面 2 颗芯片；三颗料 = CPU、运存、存储三颗独立（200/178-ball 独立运存），表里的 4DR/4CR/32-16/64-32 以及 SDAD/TY/JY 等带独立运存的板码属于这档；盖子板 = 运存 PoP 叠在 CPU 上，存储独立，496-ball 运存满分；存储 = eMMC/UFS 单颗存储，具体板型要看旁边运存怎么装。</p>
           <p><b>496：</b>是 LPDDR5/5X 运存颗粒的一档 FBGA 球数（三星、海力士、长鑫都有 496Ball 产品）；496 桶是按这个运存档收整板，不是 uMCP 合封。</p>
           <p><b>D3 / D4：</b>D3 = LPDDR3，D4 = LPDDR4X。D3 的 B809/B614 是 LPDDR3；D4 的 B425/B422/H9HP52AC 是 LPDDR4X。D3 里的 H9HQ52ACP 是 uMCP（LPDDR4X），单独按 uMCP 处理。</p>
           <p><b>Bxxx：</b>B614 / B809 / B425 / B422 是三星料号 hyphen 后的版本/封装后缀，同一后缀对应多个完整型号：B809 = KMRC1000BM-B809（3+64）/ KMRC10014M-B809（4+64）；B425 = KMDH/KMDP（4+64）/ KMDX（3+32）；B515 = KM3H6001CA / KM3H6001CM（6+64）；B625 = KMDC（4+64）/ KMDV（4+128）。</p>
@@ -734,12 +734,13 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     if (b === 496) return "盖子板";
     if (m.family === "eMCP" || m.family === "uMCP") return "顶配";
     if (m.family === "LPDDR5") return "盖子板";
-    if (m.family === "eMMC" || m.family === "UFS") return "未分类";
+    if (m.family === "eMMC" || m.family === "UFS") return "存储";
     if (b === 221 || b === 254 || b === 297 || b === 144) return "顶配";
     const s = (m.model + " " + (m.aliases || []).join(" ")).toUpperCase();
     if (s.includes("EMCP") || s.includes("UMCP") || s.includes("ENCP")) return "顶配";
     if (/^(4DR|4CR)-/.test(s)) return "三颗料";
     if (/^(32|64)-\d+/.test(s)) return "三颗料";
+    if (/^(SDAD|SD9DS|TY|JY|JWA|JW|037|044|036|28C)/.test(s)) return "三颗料";
     if (s.startsWith("JZ")) return "顶配";
     if (s.startsWith("KMR") || s.startsWith("H9HR")) return "顶配";
     return "未分类";
@@ -967,7 +968,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     $("#familyChips").innerHTML = families.map(f =>
       `<button class="chip ${filterFamily===f?"on":""}" data-family="${esc(f)}">${esc(f)}<span class="cnt">${countF(f)}</span></button>`
     ).join("");
-    const cats = ["全部","顶配","盖子板","三颗料"];
+    const cats = ["全部","顶配","盖子板","三颗料","存储"];
     const countC = (c) => ALL.filter(m => c === "全部" || m.cat === c).length;
     $("#catChips").innerHTML = cats.map(c =>
       `<button class="chip ${filterCat===c?"on":""}" data-cat="${esc(c)}">${esc(c)}<span class="cnt">${countC(c)}</span></button>`
