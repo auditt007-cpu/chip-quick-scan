@@ -75,6 +75,7 @@
   .badge{display:inline-block;border-radius:999px;padding:1px 6px;font-size:10.5px;line-height:1.55;background:#eef1f2;color:#48545c;font-weight:650}
   .badge.fam{background:#e7eef4;color:var(--blue)}
   .badge.bucket{background:#fbeccf;color:#8a5a13}
+  .badge.cat{background:#e8f1ff;color:#1f4e8c;border:1px solid #c9ddf5}
   .badge.warn{background:#f7e5e1;color:var(--danger)}
   .cand-note{display:block;font-size:10.5px;color:#8b949a;margin-top:3px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .empty{background:#fff;border:1px dashed var(--line);border-radius:11px;padding:16px;text-align:center;color:var(--muted);font-size:12.5px;margin:8px 0}
@@ -241,8 +242,9 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     <section class="view" id="view-models">
       <div class="library-head"><b id="modelCount"></b><span>按型号/数字搜 · 价格基准 2026-11-01</span></div>
       <details class="add-box" open>
-        <summary>口径说明：496 / D3 D4 / Bxxx / JZ</summary>
+        <summary>口径说明：板型 / 496 / D3 D4 / Bxxx / JZ</summary>
         <div class="note" style="margin:8px 0 0;font-size:12px;line-height:1.7">
+          <p><b>板型：</b>顶配 = 运存+存储集成在一颗 eMCP/uMCP 里，CPU 独立，表面 2 颗芯片；200球（三颗料）= CPU/运存/存储三颗独立，200-ball 存储；盖板 = 运存 PoP 叠在 CPU 上，存储独立，496-ball 运存满分。</p>
           <p><b>496：</b>是 LPDDR5/5X 运存颗粒的一档 FBGA 球数（三星、海力士、长鑫都有 496Ball 产品）；496 桶是按这个运存档收整板，不是 uMCP 合封。</p>
           <p><b>D3 / D4：</b>D3 = LPDDR3，D4 = LPDDR4X。D3 的 B809/B614 是 LPDDR3；D4 的 B425/B422/H9HP52AC 是 LPDDR4X。D3 里的 H9HQ52ACP 是 uMCP（LPDDR4X），单独按 uMCP 处理。</p>
           <p><b>Bxxx：</b>B614 / B809 / B425 / B422 是三星料号 hyphen 后的版本/封装后缀，同一后缀对应多个完整型号：B809 = KMRC1000BM-B809（3+64）/ KMRC10014M-B809（4+64）；B425 = KMDH/KMDP（4+64）/ KMDX（3+32）；B515 = KM3H6001CA / KM3H6001CM（6+64）；B625 = KMDC（4+64）/ KMDV（4+128）。</p>
@@ -725,6 +727,20 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
+  function catOf(m){
+    const b = Number(m.balls) || 0;
+    if (b === 200) return "200球";
+    if (b === 496) return "盖板";
+    if (m.family === "eMCP" || m.family === "uMCP") return "顶配";
+    if (m.family === "eMMC" || m.family === "UFS" || m.family === "LPDDR5") return "盖板";
+    if (b === 153) return "盖板";
+    if (b === 221 || b === 254 || b === 297 || b === 144) return "顶配";
+    const s = (m.model + " " + (m.aliases || []).join(" ")).toUpperCase();
+    if (s.includes("EMCP") || s.includes("UMCP")) return "顶配";
+    if (s.startsWith("JZ")) return "顶配";
+    return "未分类";
+  }
+
   function prep(m, id){
     const aliases = (m.aliases || []).filter(Boolean);
     const runs = [];
@@ -743,6 +759,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     if (m.ram && m.rom) m._caps.push(m.ram + "+" + m.rom, m.rom + "+" + m.ram);
     m._caps = Array.from(new Set(m._caps));
     m._capsNorm = m._caps.map(x => x.replace(/\D/g, ""));
+    m.cat = catOf(m);
     return m;
   }
 
@@ -967,10 +984,11 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
       const price = m.price != null ? `¥${m.price}` : "询价";
       const priceCls = m.price != null ? "price" : "price na";
       const bucket = m.bucket ? `<span class="badge bucket">${esc(m.bucket)}</span>` : "";
+      const cat = m.cat ? `<span class="badge cat">${esc(m.cat)}</span>` : "";
       const balls = m.balls ? `<span>${m.balls}球</span>` : "";
       return `<button class="cand ${i===0?"first":""}" data-id="${m.id}" data-fam="${esc(m.family)}">
         <span class="cand-top"><span class="model">${highlight(m.model, q)}</span><span class="${priceCls}">${price}</span></span>
-        <span class="meta"><span class="badge fam">${esc(m.family)}</span><span class="badge">${esc(m.brand)}</span>${balls}<span>${esc(cfg(m))}</span>${bucket}</span>
+        <span class="meta"><span class="badge fam">${esc(m.family)}</span><span class="badge">${esc(m.brand)}</span>${balls}<span>${esc(cfg(m))}</span>${cat}${bucket}</span>
         ${(m.note || (m.aliases && m.aliases.length)) ? `<span class="cand-note">${esc(m.note || "")}${m.aliases && m.aliases.length ? (m.note ? " · 别名 " : "别名 ") + esc(m.aliases.join(" / ")) : ""}</span>` : ""}
       </button>`;
     }).join("");
@@ -986,6 +1004,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
       model: m.model,
       brand: m.brand,
       family: m.family,
+      cat: m.cat,
       balls: m.balls,
       config: cfg(m),
       bucket: m.bucket,
@@ -1021,9 +1040,10 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     }
     const rows = recs.slice().reverse().slice(0, 80).map(r => {
       const price = r.priceActual != null ? r.priceActual : "";
+      const rc = r.cat || catOf({model:r.model, family:r.family, balls:r.balls, aliases:[]});
       return `<div class="rec" data-id="${r.id}">
         <div class="rec-top"><span class="rec-model">${esc(r.model)}</span><span class="rec-time">${new Date(r.ts).toLocaleTimeString("zh-CN",{hour:"2-digit",minute:"2-digit"})}</span></div>
-        <div class="rec-meta"><span class="badge fam">${esc(r.family || "-")}</span><span>${esc(r.config || "—")}</span>${r.bucket ? `<span class="badge bucket">${esc(r.bucket)}</span>` : ""}<span>${esc(r.batch || "")}</span></div>
+        <div class="rec-meta"><span class="badge fam">${esc(r.family || "-")}</span>${rc ? `<span class="badge cat">${esc(rc)}</span>` : ""}<span>${esc(r.config || "—")}</span>${r.bucket ? `<span class="badge bucket">${esc(r.bucket)}</span>` : ""}<span>${esc(r.batch || "")}</span></div>
         <div class="rec-actions"><span style="font-size:11px;color:#7b858c">实收 ¥</span><input class="actual-price" type="number" inputmode="decimal" value="${price}" placeholder="0"><button class="del">删除</button></div>
         ${r.note ? `<div class="rec-note">${esc(r.note)}</div>` : ""}
       </div>`;
@@ -1074,7 +1094,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     }
     $("#modelList").innerHTML = results.map(({m}) => `<div class="model-row">
       <div class="m"><b>${esc(m.model)}</b></div>
-      <div class="d"><span class="badge fam">${esc(m.family)}</span><span class="badge">${esc(m.brand)}</span>${m.balls ? `<span>${m.balls}球</span>` : ""}<span>${esc(cfg(m))}</span>${m.bucket ? `<span class="badge bucket">${esc(m.bucket)}</span>` : ""}${m.price != null ? `<span>¥${m.price}</span>` : ""}${m.custom ? `<button class="del" data-del="${esc(m.id)}">删除</button>` : ""}</div>
+      <div class="d"><span class="badge fam">${esc(m.family)}</span><span class="badge">${esc(m.brand)}</span>${m.cat ? `<span class="badge cat">${esc(m.cat)}</span>` : ""}${m.balls ? `<span>${m.balls}球</span>` : ""}<span>${esc(cfg(m))}</span>${m.bucket ? `<span class="badge bucket">${esc(m.bucket)}</span>` : ""}${m.price != null ? `<span>¥${m.price}</span>` : ""}${m.custom ? `<button class="del" data-del="${esc(m.id)}">删除</button>` : ""}</div>
       ${m.note ? `<div class="d">${esc(m.note)}</div>` : ""}
     </div>`).join("");
     if (!q && ALL.length > 60) $("#modelList").innerHTML += `<div class="more">只显示前 60 条；上面搜索可查全库。</div>`;
@@ -1114,7 +1134,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     state.records.push({
       id: "r" + Date.now() + Math.random().toString(36).slice(2, 6),
       ts: Date.now(), batch: state.batch,
-      modelId: "", model: "未知", brand: "", family: "", balls: null,
+      modelId: "", model: "未知", brand: "", family: "", cat: "未分类", balls: null,
       config: "—", bucket: null, priceRef: null, priceActual: null,
       note: note || "待补", conf: "未知"
     });
@@ -1152,10 +1172,10 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   }
 
   function buildCSV(){
-    const header = ["时间","批次","型号","品牌","家族","球数","配置","报价桶","参考价","成交价","备注"];
+    const header = ["时间","批次","型号","类别","品牌","家族","球数","配置","报价桶","参考价","成交价","备注"];
     const rows = state.records.map(r => [
       new Date(r.ts).toLocaleString("zh-CN"),
-      r.batch, r.model, r.brand, r.family, r.balls == null ? "" : r.balls,
+      r.batch, r.model, r.cat || catOf({model:r.model, family:r.family, balls:r.balls, aliases:[]}), r.brand, r.family, r.balls == null ? "" : r.balls,
       r.config, r.bucket || "", r.priceRef == null ? "" : r.priceRef,
       r.priceActual == null ? "" : r.priceActual, r.note || ""
     ]);
