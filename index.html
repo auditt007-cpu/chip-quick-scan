@@ -184,10 +184,9 @@
   .calc-entry .ce-title{font-size:13px;font-weight:750;color:#8a5a13}
   .calc-entry .ce-sub{font-size:10.5px;color:#a07a33;flex:1}
   .calc-entry .ce-arrow{color:var(--amber-deep);font-size:16px;font-weight:700}
-  .calc-card h3.calc-title{font-family:var(--sans);font-size:17px}
-  .calc-card{display:flex;flex-direction:column;padding:0;overflow:hidden}
-  .calc-head{position:relative;flex:0 0 auto;padding:14px 16px 8px}
-  .calc-body{flex:1 1 auto;min-height:0;overflow-y:auto;padding:0 16px 12px;-webkit-overflow-scrolling:touch}
+  .calc-page{padding:2px 2px 12px}
+  .calc-page .calc-title{font-family:var(--sans);font-size:17px;margin:4px 0 2px}
+  .calc-page .pmeta{margin-top:2px;font-size:12px;color:var(--muted)}
   .calc-mrow{display:flex;align-items:center;gap:10px;margin:12px 0 4px;font-size:13px;color:#34424a}
   .calc-mrow input[type=range]{flex:1;accent-color:var(--amber-deep);min-width:0}
   .calc-mrow b{font-family:var(--mono);font-size:15px;color:var(--amber-deep);min-width:52px;text-align:right}
@@ -210,11 +209,12 @@
   .cq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:7px}
   .qcell{min-width:0;background:rgba(255,255,255,.08);border-radius:8px;padding:5px 2px}
   .qcell .qk{font-size:10px;opacity:.7}
-  .qcell .qn{font-size:17px;font-weight:800;font-family:var(--mono);line-height:1.3}
-  .qcell .qi{font-size:9px;opacity:.65;font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .qcell .qn{font-size:20px;font-weight:800;font-family:var(--mono);line-height:1.3}
+  .qcell .qi{display:flex;justify-content:center;gap:4px;font-size:10px;opacity:.65;font-family:var(--mono)}
+  .qcell .qi span{white-space:nowrap}
   .calc-stats{font-size:11.5px;color:#5f5b4f;margin:4px 0 2px;text-align:center}
   .calc-stats b{font-family:var(--mono);color:var(--amber-deep)}
-  @media (max-width:420px){.calc-quotes{grid-template-columns:1fr}}
+  @media (max-width:560px){.calc-quotes{grid-template-columns:1fr}}
   @media (max-height:700px){ .calc-entry .ce-sub{display:none} .calc-entry{margin-top:4px;padding:5px 10px} }
 </style>
 <script>
@@ -233,7 +233,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
 <body>
 <div class="app">
   <header>
-    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.6</span></div>
+    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.7</span></div>
     <div class="sub">输数字 → 实时候选 → 点一下入库 · 价格基准 2026-11-07</div>
     <div class="context">
       <label>批次 <input id="batch" autocomplete="off"></label>
@@ -250,6 +250,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     <button class="tab on" data-tab="scan">录入</button>
     <button class="tab" data-tab="records">记录 / 统计</button>
     <button class="tab" data-tab="models">型号库</button>
+    <button class="tab" data-tab="calc">报价</button>
   </nav>
 
   <div id="storageWarn">浏览器本地存储不可用：记录只保存在当前页面，关闭前请点“导出 CSV”。</div>
@@ -314,43 +315,39 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
       </details>
       <div id="modelList"></div>
     </section>
+
+    <section class="view" id="view-calc">
+      <div class="calc-page">
+        <h3 class="calc-title">回收报价计算器</h3>
+        <div class="pmeta">卖价基准 2026-11-10 手写回收价 · 报价 = 卖价 × (1−毛利率)，向下取整</div>
+        <div class="calc-mrow">
+          <label for="calcMargin">预期毛利率</label>
+          <input type="range" id="calcMargin" min="0" max="50" step="0.5" value="20">
+          <b id="calcMarginVal">20%</b>
+        </div>
+        <div class="calc-cats" id="calcCats"></div>
+        <div class="calc-presets">
+          <button id="calcPresetBatch">本批比例</button>
+          <button id="calcPresetEven">均匀</button>
+          <button id="calcPresetZero">清零</button>
+        </div>
+        <div class="calc-grid" id="calcGrid"></div>
+        <div class="calc-rate">
+          <label for="calcRate">汇率</label><span>1 元 =</span>
+          <input id="calcRate" type="number" inputmode="decimal" min="0" step="1" value="235">
+          <span>伊拉克第纳尔</span>
+        </div>
+        <div class="calc-quotes">
+          <div class="cq"><div class="l">顶配 报价 · 元/片</div><div class="cq-grid" id="qTop"></div></div>
+          <div class="cq"><div class="l">三颗料+eMMC 报价 · 元/片</div><div class="cq-grid" id="qComb"></div></div>
+        </div>
+        <div class="calc-stats">预计毛利率 <b id="qMargin">—</b> · 每百片收入 <b id="qRev">—</b> · 每百片成本 <b id="qCost">—</b></div>
+        <div class="pnote">先调三类占比（eMMC 自动补齐），再调每类内部容量占比（256G 自动补齐），均 5% 一步。顶配各档单独报；三颗料与 eMMC 同档按占比加权合并报。报价向下取整；默认 1 元 = 235 第纳尔，可手动改。</div>
+      </div>
+    </section>
   </main>
 </div>
 <div class="pop-mask" id="popMask"><div class="pop-card" id="pop"></div></div>
-<div class="pop-mask" id="calcMask">
-  <div class="pop-card calc-card">
-    <div class="calc-head">
-      <button class="pop-close" id="calcClose">×</button>
-      <h3 class="calc-title">回收报价计算器</h3>
-    </div>
-    <div class="calc-body" id="calcBody">
-    <div class="pmeta">卖价基准 2026-11-10 手写回收价 · 报价 = 卖价 × (1−毛利率)，向下取整</div>
-    <div class="calc-mrow">
-      <label for="calcMargin">预期毛利率</label>
-      <input type="range" id="calcMargin" min="0" max="50" step="0.5" value="20">
-      <b id="calcMarginVal">20%</b>
-    </div>
-    <div class="calc-cats" id="calcCats"></div>
-    <div class="calc-presets">
-      <button id="calcPresetBatch">本批比例</button>
-      <button id="calcPresetEven">均匀</button>
-      <button id="calcPresetZero">清零</button>
-    </div>
-    <div class="calc-grid" id="calcGrid"></div>
-    <div class="calc-rate">
-      <label for="calcRate">汇率</label><span>1 元 =</span>
-      <input id="calcRate" type="number" inputmode="decimal" min="0" step="1" value="235">
-      <span>伊拉克第纳尔</span>
-    </div>
-    <div class="calc-quotes">
-      <div class="cq"><div class="l">顶配 报价 · 元/片</div><div class="cq-grid" id="qTop"></div></div>
-      <div class="cq"><div class="l">三颗料+eMMC 报价 · 元/片</div><div class="cq-grid" id="qComb"></div></div>
-    </div>
-    <div class="calc-stats">预计毛利率 <b id="qMargin">—</b> · 每百片收入 <b id="qRev">—</b> · 每百片成本 <b id="qCost">—</b></div>
-    <div class="pnote">先调三类占比（eMMC 自动补齐），再调每类内部容量占比（256G 自动补齐），均 5% 一步。顶配各档单独报；三颗料与 eMMC 同档按占比加权合并报。报价向下取整；默认 1 元 = 235 第纳尔，可手动改。</div>
-    </div>
-  </div>
-</div>
 <div id="toast"></div>
 
 <script>
@@ -2368,7 +2365,6 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   var SELL={"顶配":{32:38,64:110,128:145,256:150},"三颗粒":{32:43,64:70,128:95,256:120},"eMMC":{32:28,64:38,128:55,256:80}};
   var BATCH={cat:{"顶配":50,"三颗粒":20},dist:{"顶配":{32:25,64:30,128:35},"三颗粒":{32:0,64:0,128:65},"eMMC":{32:20,64:25,128:50}}};
   var CATS=["顶配","三颗粒","eMMC"], CAPS=[32,64,128,256], MAN=[32,64,128];
-  var mask=document.getElementById('calcMask'), body=document.getElementById('calcBody');
   var margin=document.getElementById('calcMargin'), rate=document.getElementById('calcRate');
   var catWrap=document.getElementById('calcCats'), grid=document.getElementById('calcGrid');
   var catS={}, distS={}, qT={}, qC={};
@@ -2412,10 +2408,10 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   });});
 
   function setQ(q,p,r){
-    q.n.textContent=p==null?'—':p;
+    q.n.textContent=p==null?'—':'¥'+p;
     var show=p!=null&&r>0;
     q.i.style.display=show?'':'none';
-    q.i.textContent=show?Math.round(p*r).toLocaleString('en-US'):'';
+    q.i.innerHTML=show?'<span>د.ع</span><span>'+Math.round(p*r).toLocaleString('en-US')+'</span>':'';
   }
   function recalc(){
     var m=+margin.value/100;
@@ -2456,9 +2452,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   document.getElementById('calcPresetZero').addEventListener('click',function(){setAll(function(){return 0;},function(){return 0;});});
   margin.addEventListener('input',recalc);
   rate.addEventListener('input',recalc);
-  document.getElementById('calcOpen').addEventListener('click',function(){mask.classList.add('on');body.scrollTop=0;recalc();});
-  document.getElementById('calcClose').addEventListener('click',function(){mask.classList.remove('on');});
-  mask.addEventListener('click',function(e){if(e.target===mask)mask.classList.remove('on');});
+  document.getElementById('calcOpen').addEventListener('click',function(){window.__chipApp.setTab('calc');});
   recalc();
   window.__calc={recalc:recalc,SELL:SELL,BATCH:BATCH};
 })();
