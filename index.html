@@ -210,12 +210,17 @@
   .calc-quotes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:4px 0 2px;flex:1}
   .cq{background:var(--navy);color:#fff;border-radius:12px;padding:6px;text-align:center;display:flex;flex-direction:column}
   .cq .l{font-size:10px;opacity:.75}
+  .cq-head{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:20px}
+  .seg{display:flex;gap:2px;background:rgba(255,255,255,.1);border-radius:999px;padding:2px}
+  .seg b{font-size:10px;font-weight:700;font-family:var(--mono);padding:2px 7px;border-radius:999px;cursor:pointer;color:rgba(255,255,255,.72);user-select:none;-webkit-tap-highlight-color:transparent}
+  .seg b.on{background:var(--amber);color:#2a1c05}
   .cq-grid{display:flex;flex-direction:column;gap:4px;margin-top:6px;flex:1}
   .qcell{min-width:0;background:rgba(255,255,255,.1);border-radius:8px;padding:4px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;flex:1}
   .qcell .qk{font-size:10px;opacity:.7}
-  .qcell .qn{font-size:17px;font-weight:800;font-family:var(--mono);line-height:1.2}
-  .qcell .qi{display:flex;gap:3px;font-size:9.5px;opacity:.7;font-family:var(--mono)}
-  .qcell .qi span{white-space:nowrap}
+  .qcell .qn{flex:1;display:flex;align-items:baseline;justify-content:center;gap:4px;font-size:17px;font-weight:800;font-family:var(--mono);line-height:1.2}
+  .qcell .qn span{white-space:nowrap}
+  .qcell .qn span:first-child{font-size:10px;font-weight:600;opacity:.7}
+  .qref{font-size:10.5px;opacity:.6;font-family:var(--mono);min-width:40px;text-align:right}
   .rcell input{width:80px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:6px 8px;font-family:var(--mono);font-size:15px;text-align:right;outline:none;min-width:0}
   .rcell input::placeholder{color:rgba(255,255,255,.4);font-size:11px}
   .rcell input:focus{border-color:var(--amber)}
@@ -231,11 +236,14 @@
     .calc-quotes{grid-template-columns:1fr}
     .cq{padding:8px;border-radius:14px}
     .cq .l{font-size:11px}
+    .cq-head{min-height:30px}
+    .seg b{font-size:11px;padding:5px 12px}
     .cq-grid{gap:6px;margin-top:7px}
     .qcell{padding:6px 12px;border-radius:10px}
     .qcell .qk{font-size:11px}
-    .qcell .qn{font-size:22px}
-    .qcell .qi{font-size:11px;gap:4px}
+    .qcell .qn{font-size:20px}
+    .qcell .qn span:first-child{font-size:11px}
+    .qref{font-size:11px}
   }
   @media (max-height:700px){ .calc-entry .ce-sub{display:none} .calc-entry{margin-top:4px;padding:5px 10px} }
 </style>
@@ -255,7 +263,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
 <body>
 <div class="app">
   <header>
-    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.13</span></div>
+    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.15</span></div>
     <div class="sub">输数字 → 实时候选 → 点一下入库 · 价格基准 2026-11-07</div>
     <div class="context">
       <label>批次 <input id="batch" autocomplete="off"></label>
@@ -361,8 +369,8 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
           <span>第纳尔</span>
         </div>
         <div class="calc-quotes">
-          <div class="cq"><div class="l">顶配 · 元/片</div><div class="cq-grid" id="qTop"></div></div>
-          <div class="cq"><div class="l">三颗料+eMMC · 元/片</div><div class="cq-grid" id="qComb"></div></div>
+          <div class="cq"><div class="l">顶配 · 第纳尔/片</div><div class="cq-grid" id="qTop"></div></div>
+          <div class="cq"><div class="cq-head"><span class="l">三颗料+eMMC</span><div class="seg" id="mixSeg" role="group" aria-label="三颗料与eMMC配比"><b data-split="1">1:1</b><b data-split="2" class="on">1:2</b><b data-split="3">1:3</b></div></div><div class="cq-grid" id="qComb"></div></div>
         </div>
       </div>
     </section>
@@ -402,7 +410,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     <button class="pop-close" id="calcMoreClose">×</button>
     <h3>报价说明</h3>
     <div class="pmeta">卖价基准 2026-11-10 手写回收价 · 报价 = 卖价 × (1−毛利率)，向下取整</div>
-    <div class="pnote">类别比例固定来自金山文档·合并统计（按数量，待核不计）。推报价：顶配各档单独报；三颗料与 eMMC 同档按数量加权合并报；报价 = 卖价 × (1−毛利率)，向下取整。推毛利：录入八档第纳尔报价，按汇率折 ¥ 参考，再按合并统计的容量片数推整票毛利率，亏本报红。默认 1 元 = 235 第纳尔，可手动改。</div>
+    <div class="pnote">类别比例固定来自金山文档·合并统计（按数量，待核不计）。推报价：顶配各档单独报；三颗料与 eMMC 同档合并报，配比可用卡片右上开关在 1:1 / 1:2 / 1:3 之间切换（默认 1:2），报价 = 加权卖价 × (1−毛利率)，向下取整。推毛利：录入八档第纳尔报价，按汇率折 ¥ 参考，再按合并统计的容量片数推整票毛利率，亏本报红。默认 1 元 = 235 第纳尔，可手动改。</div>
   </div>
 </div>
 <div id="toast"></div>
@@ -2425,12 +2433,13 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   var CATS=["顶配","三颗粒","eMMC"], CAPS=[32,64,128,256];
   var margin=document.getElementById('calcMargin'), rate=document.getElementById('calcRate');
   var qT={}, qC={};
+  var split=2;
 
   function makeQ(parent,k){
     var d=document.createElement('div');d.className='qcell';
-    d.innerHTML='<div class="qk">'+k+'G</div><div class="qn">—</div><div class="qi"></div>';
+    d.innerHTML='<div class="qk">'+k+'G</div><div class="qn">—</div><div class="qref">—</div>';
     parent.appendChild(d);
-    return {n:d.children[1],i:d.children[2]};
+    return {n:d.children[1],ref:d.children[2]};
   }
   var total=0;CATS.forEach(function(c){total+=MIX[c];});
   function buildMix(id){
@@ -2488,17 +2497,15 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   })();
 
   function setQ(q,p,r){
-    q.n.textContent=p==null?'—':'¥'+p;
     var show=p!=null&&r>0;
-    q.i.style.display=show?'':'none';
-    var n=Math.round(p*r);
-    q.i.innerHTML=show?'<span>د.ع</span><span>'+n.toLocaleString('en-US')+'</span>':'';
+    q.n.innerHTML=show?'<span>د.ع</span><span>'+Math.round(p*r).toLocaleString('en-US')+'</span>':'—';
+    q.ref.textContent=p!=null?'¥'+p:'—';
   }
   function recalc(){
     var m=+margin.value/100;
     document.getElementById('calcMarginVal').textContent=(+margin.value).toFixed(1).replace(/\.0$/,'')+'%';
     var r=+rate.value;if(!isFinite(r)||r<0)r=0;
-    var wS=MIX['三颗粒'],wE=MIX['eMMC'];
+    var wS=1,wE=split;
     CAPS.forEach(function(k){
       setQ(qT[k],Math.floor(SELL['顶配'][k]*(1-m)),r);
       setQ(qC[k],Math.floor((wS*SELL['三颗粒'][k]+wE*SELL['eMMC'][k])/(wS+wE)*(1-m)),r);
@@ -2506,6 +2513,13 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   }
   margin.addEventListener('input',recalc);
   rate.addEventListener('input',recalc);
+  var mixSeg=document.getElementById('mixSeg');
+  mixSeg.addEventListener('click',function(e){
+    var b=e.target.closest('b');if(!b||!mixSeg.contains(b))return;
+    split=+b.dataset.split;
+    Array.prototype.forEach.call(mixSeg.children,function(x){x.classList.toggle('on',x===b);});
+    recalc();
+  });
   document.getElementById('calcOpen').addEventListener('click',function(){window.__chipApp.setTab('calc');});
   var moreMask=document.getElementById('calcMoreMask');
   document.getElementById('calcMore').addEventListener('click',function(){moreMask.classList.add('on');});
@@ -2514,7 +2528,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   moreMask.addEventListener('click',function(e){if(e.target===moreMask)moreMask.classList.remove('on');});
   recalc();
   revCalc();
-  window.__calc={recalc:recalc,revCalc:revCalc,SELL:SELL,MIX:MIX};
+  window.__calc={recalc:recalc,revCalc:revCalc,SELL:SELL,MIX:MIX,setSplit:function(v){split=v;recalc();}};
 })();
 </script>
 <script>
