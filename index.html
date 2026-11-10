@@ -189,45 +189,53 @@
   .calc-page .calc-title{font-family:var(--sans);font-size:15px;margin:0}
   .app:has(#view-calc.on) .calc-entry{display:none}
   .app:has(#view-calc.on) .context,.app:has(#view-calc.on) .sub{display:none}
+  .app:has(#view-rev.on) .calc-entry{display:none}
+  .app:has(#view-rev.on) .context,.app:has(#view-rev.on) .sub{display:none}
   .calc-mrow{display:flex;align-items:center;gap:8px;margin:2px 0 2px;font-size:12px;color:#34424a}
   .calc-mrow input[type=range]{flex:1;accent-color:var(--amber-deep);min-width:0;height:24px}
   .calc-mrow b{font-family:var(--mono);font-size:14px;color:var(--amber-deep);min-width:44px;text-align:right}
-  .calc-presets{display:flex;gap:6px;margin:10px 0}
-  .calc-presets button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:11.5px;color:#5c6870;font-family:var(--sans);cursor:pointer}
-  .calc-cats{display:grid;grid-template-columns:34px repeat(3,1fr);gap:5px;margin:0 0 2px}
-  .calc-grid{display:grid;grid-template-columns:34px repeat(4,1fr);gap:5px}
-  .calc-rowlab{display:flex;align-items:center;font-size:11px;font-weight:650;color:#34424a}
-  .ccell{background:#fff;border:1px solid var(--line);border-radius:9px;padding:4px 5px 4px;min-width:0}
-  .ccell .ch{display:flex;justify-content:space-between;gap:2px;font-size:10.5px;font-weight:650;color:#34424a}
-  .ccell .ch i{font-style:normal;color:#9aa2a8;font-weight:400;font-size:9.5px}
-  .ccell .cv{text-align:center;font-family:var(--mono);font-size:14px;font-weight:700;color:#34424a;margin:0 0 2px}
-  .cstep{display:flex;gap:4px}
-  .cstep button{flex:1;min-height:24px;border:1px solid var(--line);background:#fff;border-radius:7px;font-size:14px;font-weight:700;color:#4b565d;font-family:var(--mono);touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer}
-  .cstep button:active{background:#fbeccf;border-color:#e9c98f;color:var(--amber-deep)}
-  .cbar{height:5px;background:#eee7d9;border-radius:999px;margin:6px 2px 8px;overflow:hidden}
-  .cbar i{display:block;height:100%;background:var(--amber);border-radius:999px}
+  .calc-mix{margin:2px 0 4px}
+  .mix-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:650;color:#34424a;margin:0 0 4px}
+  .mix-head i{font-style:normal;color:#9aa2a8;font-weight:400;font-size:10px}
+  .mix-cells{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+  .mcell{background:#fff;border:1px solid var(--line);border-radius:9px;padding:5px 6px}
+  .mcell .mh{display:flex;justify-content:space-between;gap:2px;font-size:10.5px;font-weight:650;color:#34424a}
+  .mcell .mh i{font-style:normal;color:#9aa2a8;font-weight:400;font-size:9.5px}
+  .mcell .mv{text-align:center;font-family:var(--mono);font-size:15px;font-weight:700;color:#34424a;margin:1px 0 3px}
+  .mbar{height:5px;background:#eee7d9;border-radius:999px;overflow:hidden}
+  .mbar i{display:block;height:100%;background:var(--amber);border-radius:999px}
+  .mix-src{margin:4px 0 0;font-size:10px;color:#9aa2a8}
   .calc-rate{display:flex;align-items:center;gap:6px;margin:6px 0 0;font-size:11.5px;color:#34424a}
   .calc-rate input{width:70px;border:1px solid var(--line);border-radius:8px;padding:4px 6px;font-size:12px;font-family:var(--mono);background:#fff;color:var(--ink)}
   .calc-quotes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:4px 0 2px;flex:1}
-  .cq{background:var(--navy);color:#fff;border-radius:12px;padding:6px 4px;text-align:center;display:flex;flex-direction:column}
+  .cq{background:var(--navy);color:#fff;border-radius:12px;padding:6px;text-align:center;display:flex;flex-direction:column}
   .cq .l{font-size:10px;opacity:.75}
-  .cq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:5px;flex:1}
-  .qcell{min-width:0;background:rgba(255,255,255,.1);border-radius:8px;padding:3px 1px;display:flex;flex-direction:column;justify-content:center;gap:1px}
-  .qcell .qk{font-size:9px;opacity:.7}
-  .qcell .qn{font-size:15px;font-weight:800;font-family:var(--mono);line-height:1.3}
-  .qcell .qi{display:flex;justify-content:center;gap:3px;font-size:9px;opacity:.7;font-family:var(--mono)}
+  .cq-grid{display:flex;flex-direction:column;gap:4px;margin-top:6px;flex:1}
+  .qcell{min-width:0;background:rgba(255,255,255,.1);border-radius:8px;padding:4px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;flex:1}
+  .qcell .qk{font-size:10px;opacity:.7}
+  .qcell .qn{font-size:17px;font-weight:800;font-family:var(--mono);line-height:1.2}
+  .qcell .qi{display:flex;gap:3px;font-size:9.5px;opacity:.7;font-family:var(--mono)}
   .qcell .qi span{white-space:nowrap}
-  .calc-stats{font-size:11.5px;color:#5f5b4f;margin:4px 0 2px;text-align:center}
-  .calc-stats b{font-family:var(--mono);color:var(--amber-deep)}
+  .rcell input{width:80px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:6px 8px;font-family:var(--mono);font-size:15px;text-align:right;outline:none;min-width:0}
+  .rcell input::placeholder{color:rgba(255,255,255,.4);font-size:11px}
+  .rcell input:focus{border-color:var(--amber)}
+  .rcell input::-webkit-outer-spin-button,.rcell input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .ry{font-family:var(--mono);font-size:10.5px;opacity:.6;min-width:44px;text-align:right}
+  .rev-total{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px;text-align:center;margin:6px 0 2px}
+  .rt-l{font-size:11px;color:#5f5b4f}
+  .rt-m{font-size:26px;font-weight:800;font-family:var(--mono);color:var(--amber-deep);line-height:1.2}
+  .rt-m.neg{color:#c2452e}
+  .rt-sub{font-size:11px;color:#5f5b4f;font-family:var(--mono)}
+  .rt-note{font-size:10px;color:#9aa2a8;margin-top:3px}
   @media (max-width:560px){
     .calc-quotes{grid-template-columns:1fr}
     .cq{padding:8px;border-radius:14px}
     .cq .l{font-size:11px}
     .cq-grid{gap:6px;margin-top:7px}
-    .qcell{padding:6px 2px;border-radius:10px;gap:2px}
-    .qcell .qk{font-size:10px}
-    .qcell .qn{font-size:20px}
-    .qcell .qi{font-size:10px;gap:4px}
+    .qcell{padding:6px 12px;border-radius:10px}
+    .qcell .qk{font-size:11px}
+    .qcell .qn{font-size:22px}
+    .qcell .qi{font-size:11px;gap:4px}
   }
   @media (max-height:700px){ .calc-entry .ce-sub{display:none} .calc-entry{margin-top:4px;padding:5px 10px} }
 </style>
@@ -247,7 +255,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
 <body>
 <div class="app">
   <header>
-    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.11</span></div>
+    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.13</span></div>
     <div class="sub">输数字 → 实时候选 → 点一下入库 · 价格基准 2026-11-07</div>
     <div class="context">
       <label>批次 <input id="batch" autocomplete="off"></label>
@@ -255,22 +263,23 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     </div>
     <button class="calc-entry" id="calcOpen">
       <span class="ce-title">回收报价计算器</span>
-      <span class="ce-sub">毛利率 · 类别/容量比例 · 四档双币报价</span>
+      <span class="ce-sub">毛利率 · 合并统计比例 · 四档双币报价</span>
       <span class="ce-arrow">›</span>
     </button>
   </header>
 
   <nav class="tabs">
-    <button class="tab on" data-tab="scan">录入</button>
-    <button class="tab" data-tab="records">记录 / 统计</button>
+    <button class="tab on" data-tab="calc">推报价</button>
+    <button class="tab" data-tab="rev">推毛利</button>
+    <button class="tab" data-tab="scan">录入</button>
+    <button class="tab" data-tab="records">记录</button>
     <button class="tab" data-tab="models">型号库</button>
-    <button class="tab" data-tab="calc">报价</button>
   </nav>
 
   <div id="storageWarn">浏览器本地存储不可用：记录只保存在当前页面，关闭前请点“导出 CSV”。</div>
 
   <main>
-    <section class="view on" id="view-scan">
+    <section class="view" id="view-scan">
       <div class="query-wrap">
         <input id="query" placeholder="输入型号里的数字，如 614 / 1000 809" autocomplete="off" spellcheck="false">
         <button id="clearQuery">清空</button>
@@ -330,7 +339,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
       <div id="modelList"></div>
     </section>
 
-    <section class="view" id="view-calc">
+    <section class="view on" id="view-calc">
       <div class="calc-page">
         <div class="calc-top">
           <h3 class="calc-title">回收报价计算器</h3>
@@ -341,8 +350,11 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
           <input type="range" id="calcMargin" min="0" max="50" step="0.5" value="20">
           <b id="calcMarginVal">20%</b>
         </div>
-        <div class="calc-cats" id="calcCats"></div>
-        <div class="calc-grid" id="calcGrid"></div>
+        <div class="calc-mix">
+          <div class="mix-head"><span>类别比例</span><i>合并统计 · 按数量</i></div>
+          <div class="mix-cells" id="calcMix"></div>
+          <div class="mix-src">来源：金山文档·合并统计（待核 15 片不计）</div>
+        </div>
         <div class="calc-rate">
           <label for="calcRate">1 元 =</label>
           <input id="calcRate" type="number" inputmode="decimal" min="0" step="1" value="235">
@@ -354,21 +366,43 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
         </div>
       </div>
     </section>
+    <section class="view" id="view-rev">
+      <div class="calc-page">
+        <div class="calc-top">
+          <h3 class="calc-title">报价推毛利率</h3>
+          <button id="revMore" class="mini">更多 ⋯</button>
+        </div>
+        <div class="calc-mix">
+          <div class="mix-head"><span>类别比例</span><i>合并统计 · 按数量</i></div>
+          <div class="mix-cells" id="revMix"></div>
+          <div class="mix-src">来源：金山文档·合并统计（待核 15 片不计）</div>
+        </div>
+        <div class="calc-rate">
+          <label for="revRate">1 元 =</label>
+          <input id="revRate" type="number" inputmode="decimal" min="0" step="1" value="235">
+          <span>第纳尔</span>
+        </div>
+        <div class="calc-quotes">
+          <div class="cq"><div class="l">顶配 · 录入报价（第纳尔/片）</div><div class="cq-grid" id="rTop"></div></div>
+          <div class="cq"><div class="l">三颗料+eMMC · 录入报价（第纳尔/片）</div><div class="cq-grid" id="rComb"></div></div>
+        </div>
+        <div class="rev-total">
+          <div class="rt-l">整票毛利率</div>
+          <div class="rt-m" id="revMargin">—</div>
+          <div class="rt-sub" id="revSub">填齐八档第纳尔报价</div>
+          <div class="rt-note">容量片数按合并统计 · 512G/16G/空容量/待核 不计</div>
+        </div>
+      </div>
+    </section>
   </main>
 </div>
 <div class="pop-mask" id="popMask"><div class="pop-card" id="pop"></div></div>
 <div class="pop-mask" id="calcMoreMask">
   <div class="pop-card">
     <button class="pop-close" id="calcMoreClose">×</button>
-    <h3>更多设置</h3>
+    <h3>报价说明</h3>
     <div class="pmeta">卖价基准 2026-11-10 手写回收价 · 报价 = 卖价 × (1−毛利率)，向下取整</div>
-    <div class="calc-presets">
-      <button id="calcPresetBatch">本批比例</button>
-      <button id="calcPresetEven">均匀</button>
-      <button id="calcPresetZero">清零</button>
-    </div>
-    <div class="calc-stats">预计毛利率 <b id="qMargin">—</b> · 每百片收入 <b id="qRev">—</b> · 每百片成本 <b id="qCost">—</b></div>
-    <div class="pnote">先调三类占比（eMMC 自动补齐），再调每类内部容量占比（256G 自动补齐）。−/+ 点按一下 5%，长按连调。顶配各档单独报；三颗料与 eMMC 同档按占比加权合并报。报价向下取整；默认 1 元 = 235 第纳尔，可手动改。</div>
+    <div class="pnote">类别比例固定来自金山文档·合并统计（按数量，待核不计）。推报价：顶配各档单独报；三颗料与 eMMC 同档按数量加权合并报；报价 = 卖价 × (1−毛利率)，向下取整。推毛利：录入八档第纳尔报价，按汇率折 ¥ 参考，再按合并统计的容量片数推整票毛利率，亏本报红。默认 1 元 = 235 第纳尔，可手动改。</div>
   </div>
 </div>
 <div id="toast"></div>
@@ -1778,7 +1812,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
 
   let state = loadState();
   let ALL = [];
-  let activeTab = "scan";
+  let activeTab = "calc";
   let filterBrand = "全部";
   let filterFamily = "全部";
   let filterCat = "全部";
@@ -2386,70 +2420,72 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
 <script>
 (function(){
   var SELL={"顶配":{32:38,64:110,128:145,256:150},"三颗粒":{32:43,64:70,128:95,256:120},"eMMC":{32:28,64:38,128:55,256:80}};
-  var BATCH={cat:{"顶配":50,"三颗粒":20},dist:{"顶配":{32:25,64:30,128:35},"三颗粒":{32:0,64:0,128:65},"eMMC":{32:20,64:25,128:50}}};
-  var CATS=["顶配","三颗粒","eMMC"], CAPS=[32,64,128,256], MAN=[32,64,128];
+  // 数量来自金山文档·合并统计（2026-11-11，待核不计）
+  var MIX={"顶配":184,"三颗粒":72,"eMMC":126};
+  var CATS=["顶配","三颗粒","eMMC"], CAPS=[32,64,128,256];
   var margin=document.getElementById('calcMargin'), rate=document.getElementById('calcRate');
-  var catWrap=document.getElementById('calcCats'), grid=document.getElementById('calcGrid');
-  var catS={}, distS={}, qT={}, qC={};
+  var qT={}, qC={};
 
-  function makeCell(parent,name,auto,val){
-    var cell=document.createElement('div');cell.className='ccell';
-    cell.innerHTML='<div class="ch"><span>'+name+'</span>'+(auto?'<i>自动</i>':'')+'</div>';
-    var v=document.createElement('div');v.className='cv';cell.appendChild(v);
-    var o={val:val,v:v,bar:null,bm:null,bp:null};
-    if(auto){
-      var b=document.createElement('div');b.className='cbar';b.innerHTML='<i></i>';
-      cell.appendChild(b);o.bar=b.firstChild;
-    }else{
-      var st=document.createElement('div');st.className='cstep';
-      o.bm=document.createElement('button');o.bm.type='button';o.bm.textContent='−';
-      o.bp=document.createElement('button');o.bp.type='button';o.bp.textContent='+';
-      o.bm.setAttribute('aria-label',name+' 减5%');o.bp.setAttribute('aria-label',name+' 加5%');
-      st.appendChild(o.bm);st.appendChild(o.bp);cell.appendChild(st);
-    }
-    parent.appendChild(cell);
-    return o;
-  }
   function makeQ(parent,k){
     var d=document.createElement('div');d.className='qcell';
     d.innerHTML='<div class="qk">'+k+'G</div><div class="qn">—</div><div class="qi"></div>';
     parent.appendChild(d);
     return {n:d.children[1],i:d.children[2]};
   }
-  function bump(o,d,others){
-    var t=0;others.forEach(function(x){t+=x.val;});
-    var n=Math.max(0,Math.min(100-t,o.val+d));
-    if(n!==o.val){o.val=n;recalc();}
-  }
-  function bindStep(btn,fn){
-    var t=null,iv=null,held=false;
-    btn.addEventListener('click',function(){if(held){held=false;return;}fn();});
-    btn.addEventListener('pointerdown',function(){
-      t=setTimeout(function(){held=true;fn();iv=setInterval(fn,110);},450);
-    });
-    btn.addEventListener('pointerup',function(){clearTimeout(t);clearInterval(iv);});
-    ['pointerleave','pointercancel'].forEach(function(ev){
-      btn.addEventListener(ev,function(){clearTimeout(t);clearInterval(iv);held=false;});
+  var total=0;CATS.forEach(function(c){total+=MIX[c];});
+  function buildMix(id){
+    var wrap=document.getElementById(id);
+    CATS.forEach(function(c){
+      var p=MIX[c]/total*100;
+      var d=document.createElement('div');d.className='mcell';
+      d.innerHTML='<div class="mh"><span>'+c+'</span><i>'+MIX[c]+'片</i></div><div class="mv">'+p.toFixed(1)+'%</div><div class="mbar"><i style="width:'+p.toFixed(1)+'%"></i></div>';
+      wrap.appendChild(d);
     });
   }
-
-  var lab0=document.createElement('div');lab0.className='calc-rowlab';lab0.textContent='类别';catWrap.appendChild(lab0);
-  CATS.forEach(function(c){catS[c]=makeCell(catWrap,c,c==='eMMC',c==='eMMC'?0:35);});
-  CATS.forEach(function(c){
-    var lab=document.createElement('div');lab.className='calc-rowlab';lab.textContent=c;grid.appendChild(lab);
-    CAPS.forEach(function(k){distS[c+'_'+k]=makeCell(grid,k+'G',k===256,k===256?0:25);});
-  });
+  buildMix('calcMix');buildMix('revMix');
   CAPS.forEach(function(k){qT[k]=makeQ(document.getElementById('qTop'),k);qC[k]=makeQ(document.getElementById('qComb'),k);});
-
-  bindStep(catS['顶配'].bm,function(){bump(catS['顶配'],-5,[catS['三颗粒']]);});
-  bindStep(catS['顶配'].bp,function(){bump(catS['顶配'],5,[catS['三颗粒']]);});
-  bindStep(catS['三颗粒'].bm,function(){bump(catS['三颗粒'],-5,[catS['顶配']]);});
-  bindStep(catS['三颗粒'].bp,function(){bump(catS['三颗粒'],5,[catS['顶配']]);});
-  CATS.forEach(function(c){MAN.forEach(function(k){
-    var others=MAN.filter(function(x){return x!==k;}).map(function(x){return distS[c+'_'+x];});
-    bindStep(distS[c+'_'+k].bm,function(){bump(distS[c+'_'+k],-5,others);});
-    bindStep(distS[c+'_'+k].bp,function(){bump(distS[c+'_'+k],5,others);});
-  });});
+  var BLEND={};CAPS.forEach(function(k){BLEND[k]=(MIX['三颗粒']*SELL['三颗粒'][k]+MIX['eMMC']*SELL['eMMC'][k])/(MIX['三颗粒']+MIX['eMMC']);});
+  var rT={},rC={};
+  function makeR(parent,k){
+    var d=document.createElement('div');d.className='qcell rcell';
+    d.innerHTML='<div class="qk">'+k+'G</div><input type="number" inputmode="decimal" min="0" step="1" placeholder="第纳尔" aria-label="'+k+'G 第纳尔报价"><div class="ry">—</div>';
+    parent.appendChild(d);
+    return {inp:d.children[1],ref:d.children[2]};
+  }
+  CAPS.forEach(function(k){rT[k]=makeR(document.getElementById('rTop'),k);rC[k]=makeR(document.getElementById('rComb'),k);});
+  // 容量片数来自金山文档·合并统计（2026-11-11；512G/16G/空容量/待核 不计）
+  var CNT={"顶配":{32:45,64:52,128:65,256:22},"三颗粒":{32:0,64:0,128:47,256:24},"eMMC":{32:23,64:33,128:61,256:5}};
+  var REV=0;CATS.forEach(function(c){CAPS.forEach(function(k){REV+=CNT[c][k]*SELL[c][k];});});
+  var revRate=document.getElementById('revRate');
+  function revCalc(){
+    var r=+revRate.value;if(!isFinite(r)||r<=0)r=0;
+    var ok=r>0,cost=0;
+    CAPS.forEach(function(k){
+      [[rT[k],CNT['顶配'][k]],[rC[k],CNT['三颗粒'][k]+CNT['eMMC'][k]]].forEach(function(pair){
+        var v=+pair[0].inp.value;
+        if(!pair[0].inp.value||!isFinite(v)||v<=0||!r){pair[0].ref.textContent='—';ok=false;return;}
+        var y=v/r;
+        pair[0].ref.textContent='¥'+(Math.round(y*10)/10);
+        cost+=pair[1]*y;
+      });
+    });
+    var el=document.getElementById('revMargin'),sub=document.getElementById('revSub');
+    if(!ok){el.textContent='—';el.classList.remove('neg');sub.textContent='填齐八档第纳尔报价';return;}
+    var m=(1-cost/REV)*100;
+    el.textContent=m.toFixed(1)+'%';
+    el.classList.toggle('neg',m<0);
+    sub.textContent='整票成本 ¥'+Math.round(cost).toLocaleString('en-US')+' · 卖价收入 ¥'+REV.toLocaleString('en-US');
+  }
+  CAPS.forEach(function(k){rT[k].inp.addEventListener('input',revCalc);rC[k].inp.addEventListener('input',revCalc);});
+  revRate.addEventListener('input',revCalc);
+  // 默认用推报价当前毛利率折成的第纳尔回填，可改
+  (function(){
+    var m=+margin.value/100,r=+revRate.value||235;
+    CAPS.forEach(function(k){
+      rT[k].inp.value=Math.round(Math.floor(SELL['顶配'][k]*(1-m))*r);
+      rC[k].inp.value=Math.round(Math.floor(BLEND[k]*(1-m))*r);
+    });
+  })();
 
   function setQ(q,p,r){
     q.n.textContent=p==null?'—':'¥'+p;
@@ -2461,50 +2497,24 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   function recalc(){
     var m=+margin.value/100;
     document.getElementById('calcMarginVal').textContent=(+margin.value).toFixed(1).replace(/\.0$/,'')+'%';
-    var cat={"顶配":catS['顶配'].val,"三颗粒":catS['三颗粒'].val};
-    cat['eMMC']=Math.max(0,100-cat['顶配']-cat['三颗粒']);
-    CATS.forEach(function(c){catS[c].val=cat[c];catS[c].v.textContent=cat[c]+'%';if(catS[c].bar)catS[c].bar.style.width=cat[c]+'%';});
-    var w={};
-    CATS.forEach(function(c){
-      var t=0;MAN.forEach(function(k){t+=distS[c+'_'+k].val;});
-      var d={32:distS[c+'_32'].val,64:distS[c+'_64'].val,128:distS[c+'_128'].val,256:Math.max(0,100-t)};
-      CAPS.forEach(function(k){
-        distS[c+'_'+k].val=d[k];distS[c+'_'+k].v.textContent=d[k]+'%';
-        if(distS[c+'_'+k].bar)distS[c+'_'+k].bar.style.width=d[k]+'%';
-        w[c+'_'+k]=cat[c]*d[k]/100;
-      });
-    });
     var r=+rate.value;if(!isFinite(r)||r<0)r=0;
-    var rev=0,cost=0;
+    var wS=MIX['三颗粒'],wE=MIX['eMMC'];
     CAPS.forEach(function(k){
-      var pT=Math.floor(SELL['顶配'][k]*(1-m));
-      var wS=w['三颗粒_'+k],wE=w['eMMC_'+k];
-      var pC=(wS+wE)?Math.floor((wS*SELL['三颗粒'][k]+wE*SELL['eMMC'][k])/(wS+wE)*(1-m)):null;
-      setQ(qT[k],pT,r);setQ(qC[k],pC,r);
-      rev+=w['顶配_'+k]*SELL['顶配'][k]+wS*SELL['三颗粒'][k]+wE*SELL['eMMC'][k];
-      cost+=w['顶配_'+k]*pT+(wS+wE)*(pC||0);
+      setQ(qT[k],Math.floor(SELL['顶配'][k]*(1-m)),r);
+      setQ(qC[k],Math.floor((wS*SELL['三颗粒'][k]+wE*SELL['eMMC'][k])/(wS+wE)*(1-m)),r);
     });
-    document.getElementById('qMargin').textContent=rev?((rev-cost)/rev*100).toFixed(1)+'%':'—';
-    document.getElementById('qRev').textContent=rev?'¥'+Math.round(rev):'—';
-    document.getElementById('qCost').textContent=rev?'¥'+Math.round(cost):'—';
   }
-  function setAll(catFn,distFn){
-    catS['顶配'].val=catFn('顶配');catS['三颗粒'].val=catFn('三颗粒');
-    CATS.forEach(function(c){MAN.forEach(function(k){distS[c+'_'+k].val=distFn(c,k);});});
-    recalc();
-  }
-  document.getElementById('calcPresetBatch').addEventListener('click',function(){setAll(function(c){return BATCH.cat[c]||0;},function(c,k){return BATCH.dist[c][k];});});
-  document.getElementById('calcPresetEven').addEventListener('click',function(){setAll(function(){return 35;},function(){return 25;});});
-  document.getElementById('calcPresetZero').addEventListener('click',function(){setAll(function(){return 0;},function(){return 0;});});
   margin.addEventListener('input',recalc);
   rate.addEventListener('input',recalc);
   document.getElementById('calcOpen').addEventListener('click',function(){window.__chipApp.setTab('calc');});
   var moreMask=document.getElementById('calcMoreMask');
   document.getElementById('calcMore').addEventListener('click',function(){moreMask.classList.add('on');});
+  document.getElementById('revMore').addEventListener('click',function(){moreMask.classList.add('on');});
   document.getElementById('calcMoreClose').addEventListener('click',function(){moreMask.classList.remove('on');});
   moreMask.addEventListener('click',function(e){if(e.target===moreMask)moreMask.classList.remove('on');});
   recalc();
-  window.__calc={recalc:recalc,SELL:SELL,BATCH:BATCH};
+  revCalc();
+  window.__calc={recalc:recalc,revCalc:revCalc,SELL:SELL,MIX:MIX};
 })();
 </script>
 <script>
