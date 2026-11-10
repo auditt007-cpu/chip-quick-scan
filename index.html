@@ -247,7 +247,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
 <body>
 <div class="app">
   <header>
-    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.10</span></div>
+    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.11</span></div>
     <div class="sub">输数字 → 实时候选 → 点一下入库 · 价格基准 2026-11-07</div>
     <div class="context">
       <label>批次 <input id="batch" autocomplete="off"></label>
@@ -2434,10 +2434,10 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   }
 
   var lab0=document.createElement('div');lab0.className='calc-rowlab';lab0.textContent='类别';catWrap.appendChild(lab0);
-  CATS.forEach(function(c){catS[c]=makeCell(catWrap,c,c==='eMMC',c==='eMMC'?0:BATCH.cat[c]);});
+  CATS.forEach(function(c){catS[c]=makeCell(catWrap,c,c==='eMMC',c==='eMMC'?0:35);});
   CATS.forEach(function(c){
     var lab=document.createElement('div');lab.className='calc-rowlab';lab.textContent=c;grid.appendChild(lab);
-    CAPS.forEach(function(k){distS[c+'_'+k]=makeCell(grid,k+'G',k===256,k===256?0:BATCH.dist[c][k]);});
+    CAPS.forEach(function(k){distS[c+'_'+k]=makeCell(grid,k+'G',k===256,k===256?0:25);});
   });
   CAPS.forEach(function(k){qT[k]=makeQ(document.getElementById('qTop'),k);qC[k]=makeQ(document.getElementById('qComb'),k);});
 
