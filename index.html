@@ -184,7 +184,7 @@
   .calc-entry .ce-title{font-size:13px;font-weight:750;color:#8a5a13}
   .calc-entry .ce-sub{font-size:10.5px;color:#a07a33;flex:1}
   .calc-entry .ce-arrow{color:var(--amber-deep);font-size:16px;font-weight:700}
-  .calc-page{padding:2px 2px 4px}
+  .calc-page{padding:2px 2px 2px;min-height:100%;display:flex;flex-direction:column}
   .calc-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 2px}
   .calc-page .calc-title{font-family:var(--sans);font-size:15px;margin:0}
   .app:has(#view-calc.on) .calc-entry{display:none}
@@ -208,18 +208,27 @@
   .cbar i{display:block;height:100%;background:var(--amber);border-radius:999px}
   .calc-rate{display:flex;align-items:center;gap:6px;margin:6px 0 0;font-size:11.5px;color:#34424a}
   .calc-rate input{width:70px;border:1px solid var(--line);border-radius:8px;padding:4px 6px;font-size:12px;font-family:var(--mono);background:#fff;color:var(--ink)}
-  .calc-quotes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:4px 0 2px}
-  .cq{background:var(--navy);color:#fff;border-radius:12px;padding:6px 4px;text-align:center}
+  .calc-quotes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:4px 0 2px;flex:1}
+  .cq{background:var(--navy);color:#fff;border-radius:12px;padding:6px 4px;text-align:center;display:flex;flex-direction:column}
   .cq .l{font-size:10px;opacity:.75}
-  .cq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:5px}
-  .qcell{min-width:0;background:rgba(255,255,255,.08);border-radius:8px;padding:3px 1px}
+  .cq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:5px;flex:1}
+  .qcell{min-width:0;background:rgba(255,255,255,.1);border-radius:8px;padding:3px 1px;display:flex;flex-direction:column;justify-content:center;gap:1px}
   .qcell .qk{font-size:9px;opacity:.7}
   .qcell .qn{font-size:15px;font-weight:800;font-family:var(--mono);line-height:1.3}
-  .qcell .qi{display:flex;justify-content:center;gap:2px;font-size:8.5px;opacity:.65;font-family:var(--mono)}
+  .qcell .qi{display:flex;justify-content:center;gap:3px;font-size:9px;opacity:.7;font-family:var(--mono)}
   .qcell .qi span{white-space:nowrap}
   .calc-stats{font-size:11.5px;color:#5f5b4f;margin:4px 0 2px;text-align:center}
   .calc-stats b{font-family:var(--mono);color:var(--amber-deep)}
-  @media (max-width:340px){.calc-quotes{grid-template-columns:1fr}}
+  @media (max-width:560px){
+    .calc-quotes{grid-template-columns:1fr}
+    .cq{padding:8px;border-radius:14px}
+    .cq .l{font-size:11px}
+    .cq-grid{gap:6px;margin-top:7px}
+    .qcell{padding:6px 2px;border-radius:10px;gap:2px}
+    .qcell .qk{font-size:10px}
+    .qcell .qn{font-size:20px}
+    .qcell .qi{font-size:10px;gap:4px}
+  }
   @media (max-height:700px){ .calc-entry .ce-sub{display:none} .calc-entry{margin-top:4px;padding:5px 10px} }
 </style>
 <script>
@@ -238,7 +247,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
 <body>
 <div class="app">
   <header>
-    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.9</span></div>
+    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.10</span></div>
     <div class="sub">输数字 → 实时候选 → 点一下入库 · 价格基准 2026-11-07</div>
     <div class="context">
       <label>批次 <input id="batch" autocomplete="off"></label>
@@ -2380,7 +2389,6 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   var BATCH={cat:{"顶配":50,"三颗粒":20},dist:{"顶配":{32:25,64:30,128:35},"三颗粒":{32:0,64:0,128:65},"eMMC":{32:20,64:25,128:50}}};
   var CATS=["顶配","三颗粒","eMMC"], CAPS=[32,64,128,256], MAN=[32,64,128];
   var margin=document.getElementById('calcMargin'), rate=document.getElementById('calcRate');
-  var narrow=window.matchMedia('(max-width:420px)');
   var catWrap=document.getElementById('calcCats'), grid=document.getElementById('calcGrid');
   var catS={}, distS={}, qT={}, qC={};
 
@@ -2448,7 +2456,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     var show=p!=null&&r>0;
     q.i.style.display=show?'':'none';
     var n=Math.round(p*r);
-    q.i.innerHTML=show?'<span>د.ع</span><span>'+(narrow.matches?n:n.toLocaleString('en-US'))+'</span>':'';
+    q.i.innerHTML=show?'<span>د.ع</span><span>'+n.toLocaleString('en-US')+'</span>':'';
   }
   function recalc(){
     var m=+margin.value/100;
