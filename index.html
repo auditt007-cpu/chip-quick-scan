@@ -184,40 +184,42 @@
   .calc-entry .ce-title{font-size:13px;font-weight:750;color:#8a5a13}
   .calc-entry .ce-sub{font-size:10.5px;color:#a07a33;flex:1}
   .calc-entry .ce-arrow{color:var(--amber-deep);font-size:16px;font-weight:700}
-  .calc-page{padding:2px 2px 12px}
-  .calc-page .calc-title{font-family:var(--sans);font-size:17px;margin:4px 0 2px}
-  .calc-page .pmeta{margin-top:2px;font-size:12px;color:var(--muted)}
-  .calc-mrow{display:flex;align-items:center;gap:10px;margin:12px 0 4px;font-size:13px;color:#34424a}
-  .calc-mrow input[type=range]{flex:1;accent-color:var(--amber-deep);min-width:0;height:28px}
-  .calc-mrow b{font-family:var(--mono);font-size:15px;color:var(--amber-deep);min-width:52px;text-align:right}
-  .calc-presets{display:flex;gap:6px;margin:6px 0 10px}
+  .calc-page{padding:2px 2px 4px}
+  .calc-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 2px}
+  .calc-page .calc-title{font-family:var(--sans);font-size:15px;margin:0}
+  .app:has(#view-calc.on) .calc-entry{display:none}
+  .app:has(#view-calc.on) .context,.app:has(#view-calc.on) .sub{display:none}
+  .calc-mrow{display:flex;align-items:center;gap:8px;margin:2px 0 2px;font-size:12px;color:#34424a}
+  .calc-mrow input[type=range]{flex:1;accent-color:var(--amber-deep);min-width:0;height:24px}
+  .calc-mrow b{font-family:var(--mono);font-size:14px;color:var(--amber-deep);min-width:44px;text-align:right}
+  .calc-presets{display:flex;gap:6px;margin:10px 0}
   .calc-presets button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:11.5px;color:#5c6870;font-family:var(--sans);cursor:pointer}
-  .calc-cats{display:grid;grid-template-columns:44px repeat(3,1fr);gap:6px;margin:2px 0 8px}
-  .calc-grid{display:grid;grid-template-columns:44px repeat(4,1fr);gap:6px}
-  .calc-rowlab{display:flex;align-items:center;font-size:12px;font-weight:650;color:#34424a}
-  .ccell{background:#fff;border:1px solid var(--line);border-radius:9px;padding:6px 6px 4px;min-width:0}
-  .ccell .ch{display:flex;justify-content:space-between;gap:2px;font-size:11px;font-weight:650;color:#34424a}
-  .ccell .ch i{font-style:normal;color:#9aa2a8;font-weight:400;font-size:10px}
-  .ccell .cv{text-align:center;font-family:var(--mono);font-size:15px;font-weight:700;color:#34424a;margin:2px 0 4px}
+  .calc-cats{display:grid;grid-template-columns:34px repeat(3,1fr);gap:5px;margin:0 0 2px}
+  .calc-grid{display:grid;grid-template-columns:34px repeat(4,1fr);gap:5px}
+  .calc-rowlab{display:flex;align-items:center;font-size:11px;font-weight:650;color:#34424a}
+  .ccell{background:#fff;border:1px solid var(--line);border-radius:9px;padding:4px 5px 4px;min-width:0}
+  .ccell .ch{display:flex;justify-content:space-between;gap:2px;font-size:10.5px;font-weight:650;color:#34424a}
+  .ccell .ch i{font-style:normal;color:#9aa2a8;font-weight:400;font-size:9.5px}
+  .ccell .cv{text-align:center;font-family:var(--mono);font-size:14px;font-weight:700;color:#34424a;margin:0 0 2px}
   .cstep{display:flex;gap:4px}
-  .cstep button{flex:1;min-height:32px;border:1px solid var(--line);background:#fff;border-radius:8px;font-size:16px;font-weight:700;color:#4b565d;font-family:var(--mono);touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer}
+  .cstep button{flex:1;min-height:24px;border:1px solid var(--line);background:#fff;border-radius:7px;font-size:14px;font-weight:700;color:#4b565d;font-family:var(--mono);touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer}
   .cstep button:active{background:#fbeccf;border-color:#e9c98f;color:var(--amber-deep)}
-  .cbar{height:6px;background:#eee7d9;border-radius:999px;margin:8px 2px 10px;overflow:hidden}
+  .cbar{height:5px;background:#eee7d9;border-radius:999px;margin:6px 2px 8px;overflow:hidden}
   .cbar i{display:block;height:100%;background:var(--amber);border-radius:999px}
-  .calc-rate{display:flex;align-items:center;gap:6px;margin:10px 0 0;font-size:12px;color:#34424a}
-  .calc-rate input{width:88px;border:1px solid var(--line);border-radius:8px;padding:5px 7px;font-size:13px;font-family:var(--mono);background:#fff;color:var(--ink)}
-  .calc-quotes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 6px}
-  .cq{background:var(--navy);color:#fff;border-radius:12px;padding:10px 8px;text-align:center}
-  .cq .l{font-size:11px;opacity:.75}
-  .cq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:7px}
-  .qcell{min-width:0;background:rgba(255,255,255,.08);border-radius:8px;padding:5px 2px}
-  .qcell .qk{font-size:10px;opacity:.7}
-  .qcell .qn{font-size:20px;font-weight:800;font-family:var(--mono);line-height:1.3}
-  .qcell .qi{display:flex;justify-content:center;gap:4px;font-size:10px;opacity:.65;font-family:var(--mono)}
+  .calc-rate{display:flex;align-items:center;gap:6px;margin:6px 0 0;font-size:11.5px;color:#34424a}
+  .calc-rate input{width:70px;border:1px solid var(--line);border-radius:8px;padding:4px 6px;font-size:12px;font-family:var(--mono);background:#fff;color:var(--ink)}
+  .calc-quotes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:4px 0 2px}
+  .cq{background:var(--navy);color:#fff;border-radius:12px;padding:6px 4px;text-align:center}
+  .cq .l{font-size:10px;opacity:.75}
+  .cq-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:5px}
+  .qcell{min-width:0;background:rgba(255,255,255,.08);border-radius:8px;padding:3px 1px}
+  .qcell .qk{font-size:9px;opacity:.7}
+  .qcell .qn{font-size:15px;font-weight:800;font-family:var(--mono);line-height:1.3}
+  .qcell .qi{display:flex;justify-content:center;gap:2px;font-size:8.5px;opacity:.65;font-family:var(--mono)}
   .qcell .qi span{white-space:nowrap}
   .calc-stats{font-size:11.5px;color:#5f5b4f;margin:4px 0 2px;text-align:center}
   .calc-stats b{font-family:var(--mono);color:var(--amber-deep)}
-  @media (max-width:560px){.calc-quotes{grid-template-columns:1fr}}
+  @media (max-width:340px){.calc-quotes{grid-template-columns:1fr}}
   @media (max-height:700px){ .calc-entry .ce-sub{display:none} .calc-entry{margin-top:4px;padding:5px 10px} }
 </style>
 <script>
@@ -236,7 +238,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
 <body>
 <div class="app">
   <header>
-    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.8</span></div>
+    <div class="topline"><h1>芯片型号快查</h1><span class="ver">v0.9</span></div>
     <div class="sub">输数字 → 实时候选 → 点一下入库 · 价格基准 2026-11-07</div>
     <div class="context">
       <label>批次 <input id="batch" autocomplete="off"></label>
@@ -321,36 +323,45 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
 
     <section class="view" id="view-calc">
       <div class="calc-page">
-        <h3 class="calc-title">回收报价计算器</h3>
-        <div class="pmeta">卖价基准 2026-11-10 手写回收价 · 报价 = 卖价 × (1−毛利率)，向下取整</div>
+        <div class="calc-top">
+          <h3 class="calc-title">回收报价计算器</h3>
+          <button id="calcMore" class="mini">更多 ⋯</button>
+        </div>
         <div class="calc-mrow">
-          <label for="calcMargin">预期毛利率</label>
+          <label for="calcMargin">毛利率</label>
           <input type="range" id="calcMargin" min="0" max="50" step="0.5" value="20">
           <b id="calcMarginVal">20%</b>
         </div>
         <div class="calc-cats" id="calcCats"></div>
-        <div class="calc-presets">
-          <button id="calcPresetBatch">本批比例</button>
-          <button id="calcPresetEven">均匀</button>
-          <button id="calcPresetZero">清零</button>
-        </div>
         <div class="calc-grid" id="calcGrid"></div>
         <div class="calc-rate">
-          <label for="calcRate">汇率</label><span>1 元 =</span>
+          <label for="calcRate">1 元 =</label>
           <input id="calcRate" type="number" inputmode="decimal" min="0" step="1" value="235">
-          <span>伊拉克第纳尔</span>
+          <span>第纳尔</span>
         </div>
         <div class="calc-quotes">
-          <div class="cq"><div class="l">顶配 报价 · 元/片</div><div class="cq-grid" id="qTop"></div></div>
-          <div class="cq"><div class="l">三颗料+eMMC 报价 · 元/片</div><div class="cq-grid" id="qComb"></div></div>
+          <div class="cq"><div class="l">顶配 · 元/片</div><div class="cq-grid" id="qTop"></div></div>
+          <div class="cq"><div class="l">三颗料+eMMC · 元/片</div><div class="cq-grid" id="qComb"></div></div>
         </div>
-        <div class="calc-stats">预计毛利率 <b id="qMargin">—</b> · 每百片收入 <b id="qRev">—</b> · 每百片成本 <b id="qCost">—</b></div>
-        <div class="pnote">先调三类占比（eMMC 自动补齐），再调每类内部容量占比（256G 自动补齐）。−/+ 点按一下 5%，长按连调。顶配各档单独报；三颗料与 eMMC 同档按占比加权合并报。报价向下取整；默认 1 元 = 235 第纳尔，可手动改。</div>
       </div>
     </section>
   </main>
 </div>
 <div class="pop-mask" id="popMask"><div class="pop-card" id="pop"></div></div>
+<div class="pop-mask" id="calcMoreMask">
+  <div class="pop-card">
+    <button class="pop-close" id="calcMoreClose">×</button>
+    <h3>更多设置</h3>
+    <div class="pmeta">卖价基准 2026-11-10 手写回收价 · 报价 = 卖价 × (1−毛利率)，向下取整</div>
+    <div class="calc-presets">
+      <button id="calcPresetBatch">本批比例</button>
+      <button id="calcPresetEven">均匀</button>
+      <button id="calcPresetZero">清零</button>
+    </div>
+    <div class="calc-stats">预计毛利率 <b id="qMargin">—</b> · 每百片收入 <b id="qRev">—</b> · 每百片成本 <b id="qCost">—</b></div>
+    <div class="pnote">先调三类占比（eMMC 自动补齐），再调每类内部容量占比（256G 自动补齐）。−/+ 点按一下 5%，长按连调。顶配各档单独报；三颗料与 eMMC 同档按占比加权合并报。报价向下取整；默认 1 元 = 235 第纳尔，可手动改。</div>
+  </div>
+</div>
 <div id="toast"></div>
 
 <script>
@@ -2369,6 +2380,7 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   var BATCH={cat:{"顶配":50,"三颗粒":20},dist:{"顶配":{32:25,64:30,128:35},"三颗粒":{32:0,64:0,128:65},"eMMC":{32:20,64:25,128:50}}};
   var CATS=["顶配","三颗粒","eMMC"], CAPS=[32,64,128,256], MAN=[32,64,128];
   var margin=document.getElementById('calcMargin'), rate=document.getElementById('calcRate');
+  var narrow=window.matchMedia('(max-width:420px)');
   var catWrap=document.getElementById('calcCats'), grid=document.getElementById('calcGrid');
   var catS={}, distS={}, qT={}, qC={};
 
@@ -2435,7 +2447,8 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
     q.n.textContent=p==null?'—':'¥'+p;
     var show=p!=null&&r>0;
     q.i.style.display=show?'':'none';
-    q.i.innerHTML=show?'<span>د.ع</span><span>'+Math.round(p*r).toLocaleString('en-US')+'</span>':'';
+    var n=Math.round(p*r);
+    q.i.innerHTML=show?'<span>د.ع</span><span>'+(narrow.matches?n:n.toLocaleString('en-US'))+'</span>':'';
   }
   function recalc(){
     var m=+margin.value/100;
@@ -2478,6 +2491,10 @@ try { if (localStorage.getItem('chipQuickScan.unlocked') !== '1') document.docum
   margin.addEventListener('input',recalc);
   rate.addEventListener('input',recalc);
   document.getElementById('calcOpen').addEventListener('click',function(){window.__chipApp.setTab('calc');});
+  var moreMask=document.getElementById('calcMoreMask');
+  document.getElementById('calcMore').addEventListener('click',function(){moreMask.classList.add('on');});
+  document.getElementById('calcMoreClose').addEventListener('click',function(){moreMask.classList.remove('on');});
+  moreMask.addEventListener('click',function(e){if(e.target===moreMask)moreMask.classList.remove('on');});
   recalc();
   window.__calc={recalc:recalc,SELL:SELL,BATCH:BATCH};
 })();
